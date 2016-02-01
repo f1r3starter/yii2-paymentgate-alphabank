@@ -56,8 +56,10 @@ class PaymentController extends Controller
     /**
      * @return mixed
      */
-    public function actionIndex()
+    public function actionInit()
     {
         
     }
+    
+    
 }

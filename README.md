@@ -1,4 +1,4 @@
-Payment Gateway for Alfabank
+Payment Gate for Alfabank
 ==========
 
 
@@ -10,13 +10,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist veksoftware/yii2-paymentgateway-alphabank "*"
+php composer.phar require --prefer-dist veksoftware/yii2-paymentgate-alphabank "*"
 ```
 
 or add
 
 ```
-"veksoftware/yii2-paymentgateway-alphabank": "*"
+"veksoftware/yii2-paymentgate-alphabank": "*"
 ```
 
 to the require section of your `composer.json` file.
@@ -31,8 +31,8 @@ Once the extension is installed, simply use it in your code by  :
 // config/main.php
 <?php
     'components' => [
-        'paymentgateway-alphabank' => [
-            'class' => '\paymentgateway-alphabank\components\PaymentComponent',
+        'paymentgate-alphabank' => [
+            'class' => '\paymentGateAlphaBank\components\PaymentComponent',
             'login' => 'my_login_at_service',
             'password' => 'my password at service',
         ]
