@@ -1,0 +1,21 @@
+{
+    "name": "VEKsoftware/yii2-paymentgate-aplhabank",
+    "description": "Extension for payment through the payment gateway of the Alfabank",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension","payment"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mikhail Eremeev",
+            "email": "velonski@yandex.ru"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "paymentgate-alphabank\\": ""
+        }
+    }
+}
