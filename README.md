@@ -31,8 +31,8 @@ Once the extension is installed, simply use it in your code by  :
 // config/main.php
 <?php
     'components' => [
-        'paymentgate-alphabank' => [
-            'class' => '\paymentGateAlphaBank\components\PaymentComponent',
+        'paymentgate\alphabank' => [
+            'class' => '\paymentgate\alphabank\components\PaymentComponent',
             'login' => 'my_login_at_service',
             'password' => 'my password at service',
         ]
