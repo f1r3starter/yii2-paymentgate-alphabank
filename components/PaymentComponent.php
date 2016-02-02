@@ -1,5 +1,5 @@
 <?php
-namespace paymentgate-alphabank\components;
+namespace paymentgate_alphabank\components;
 
 use Yii;
 use yii\base\Component;
@@ -54,6 +54,8 @@ class PaymentComponent extends Component
      */
     public function initPayment( $systemOrderId, $amount, $description )
     {
+        die( var_dump($this->returnUrl) );
+        
         if( is_null($this->returnUrl) ) return false;
         
         $data = [
@@ -61,7 +63,7 @@ class PaymentComponent extends Component
             'password' => $this->password,
             'orderNumber' => urlencode($systemOrderId),
             'amount' => urlencode($amount),
-            'returnUrl' => $this->returnUrl,
+            'returnUrl' => $this->returnUrl . ( is_integer($systemOrderId) ) ? strval($systemOrderId) : $systemOrderId,
         ];
         if( !is_null( $this->failUrl ) ) $data['failUrl'] = $this->failUrl;
         

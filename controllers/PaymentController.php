@@ -1,6 +1,6 @@
 <?php
 
-namespace paymentgate-alphabank\controllers;
+namespace paymentgate_alphabank\controllers;
 
 use Yii;
 
@@ -58,7 +58,7 @@ class PaymentController extends Controller
      */
     public function actionInit()
     {
-        
+        return true;
     }
     
     
