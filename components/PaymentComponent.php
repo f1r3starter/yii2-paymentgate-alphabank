@@ -10,6 +10,8 @@ class PaymentComponent extends Component
     public $userName;
     public $password;
     
+    public $gatewayUrl;
+    
     public $returnUrl;
     public $failUrl;
     
@@ -54,8 +56,6 @@ class PaymentComponent extends Component
      */
     public function initPayment( $systemOrderId, $amount, $description )
     {
-        die( var_dump($this->returnUrl) );
-        
         if( is_null($this->returnUrl) ) return false;
         
         $data = [
@@ -67,7 +67,7 @@ class PaymentComponent extends Component
         ];
         if( !is_null( $this->failUrl ) ) $data['failUrl'] = $this->failUrl;
         
-        $response = gateway('register.do', $data);
+        $response = $this->gateway('register.do', $data);
         
         // В случае ошибки вывести ее
         if( isset($response['errorCode']) && ($response['errorCode'] > 0) ) { 
@@ -140,7 +140,7 @@ class PaymentComponent extends Component
          *      5           Инициирована авторизация через ACS банка-эмитента.
          *      6           Авторизация отклонена.
          */
-        $response = gateway('getOrderStatus.do', $data);
+        $response = $this->gateway('getOrderStatus.do', $data);
         
         // В случае ошибки вывести ее
         if( isset($response['errorCode']) && ($response['errorCode'] > 0) ) { 
@@ -151,7 +151,7 @@ class PaymentComponent extends Component
         } else {
             
             if( !isset($response['OrderStatus']) ) return false;
-            return $response['orderStatus'];
+            return $response['OrderStatus'];
         
         }
         
@@ -181,7 +181,7 @@ class PaymentComponent extends Component
     {
         $curl = curl_init(); // Инициализируем запрос
         curl_setopt_array($curl, array(
-            CURLOPT_URL => GATEWAY_URL.$method, // Полный адрес метода
+            CURLOPT_URL => $this->gatewayUrl . $method, // Полный адрес метода
             CURLOPT_RETURNTRANSFER => true, // Возвращать ответ
             CURLOPT_POST => true, // Метод POST
             CURLOPT_POSTFIELDS => http_build_query($data) // Данные в запросе
