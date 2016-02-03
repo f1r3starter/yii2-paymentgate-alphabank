@@ -63,7 +63,7 @@ class PaymentComponent extends Component
             'password' => $this->password,
             'orderNumber' => urlencode($systemOrderId),
             'amount' => urlencode($amount),
-            'returnUrl' => $this->returnUrl . ( is_integer($systemOrderId) ) ? strval($systemOrderId) : $systemOrderId,
+            'returnUrl' => $this->returnUrl,
         ];
         if( !is_null( $this->failUrl ) ) $data['failUrl'] = $this->failUrl;
         
@@ -187,7 +187,7 @@ class PaymentComponent extends Component
             CURLOPT_POSTFIELDS => http_build_query($data) // Данные в запросе
         ));
         $response = curl_exec($curl); // Выполненяем запрос
-         
+        
         $response = json_decode($response, true); // Декодируем из JSON в массив
         curl_close($curl); // Закрываем соединение
         return $response; // Возвращаем ответ

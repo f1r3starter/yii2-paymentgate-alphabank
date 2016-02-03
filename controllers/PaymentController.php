@@ -11,6 +11,8 @@ use yii\web\ForbiddenHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
+use paymentgate_alphabank\PaymentGateAlphaBank;
+
 /**
  * PaymentController for PaymentGate
  */
@@ -44,6 +46,7 @@ class PaymentController extends Controller
     /**
      * @inheritdoc
      */
+    /*
     public function beforeAction($action) {
         
         Yii::$app->getModule('wallets');
@@ -52,13 +55,25 @@ class PaymentController extends Controller
         return parent::beforeAction($action);
         
     }
+    */
     
     /**
      * @return mixed
      */
-    public function actionInit()
+    public function actionReturn( $orderId )
     {
-        return true;
+        $paymentGate = PaymentGateAlphaBank::getInstance();
+        
+        $paymentClass = $paymentGate->paymentClass;
+        // здесь надо поставить Exception, если нет $paymentClass
+        
+        $payment = $paymentClass::find()->where([$paymentGate->paymentOrderField => $orderId])->one();
+        if( empty($payment) ) throw new NotFoundHttpException( Yii::t('paymentgate_alphabank','The requested page does not exist.') );
+        
+        return $this->render('return', [
+            'paymentGate' => $paymentGate,
+            'payment' => $payment,
+        ]);;
     }
     
     
