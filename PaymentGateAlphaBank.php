@@ -13,12 +13,15 @@ class PaymentGateAlphaBank extends \yii\base\Module
     public $accessClass;
     
     public $paymentClass;
+    
+    public $paymentIdField;
     public $paymentOrderField;
     
     public $componentName;
     
     public $returnUrl;
     public $restartUrl;
+    public $viewUrl;
     
     /**
      * Number of tasks to be handled at one shot

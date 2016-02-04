@@ -35,13 +35,17 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
     
         <div class="col-xs-6">
-            <?php if( !empty($paymentGate->returnUrl) ) echo Html::a(Yii::t('paymentgate_alphabank', 'Return'), $paymentGate->returnUrl, ['class' => 'btn btn-primary']); ?>
+            <?php if( !empty($paymentGate->returnUrl) ) echo Html::a(Yii::t('paymentgate_alphabank', 'Return'), [ $paymentGate->returnUrl ], ['class' => 'btn btn-primary']); ?>
+            <?php
+                $paymentIdField = $paymentGate->paymentIdField;
+                if( !empty($paymentGate->viewUrl) ) echo Html::a(Yii::t('paymentgate_alphabank', 'Payment details'), [ $paymentGate->viewUrl, $paymentIdField => $payment->$paymentIdField ], ['class' => 'btn btn-warning']);
+            ?>
         </div>
     
         <?php if( $payment->isAbort ): ?>
         
             <div class="col-xs-6 text-right">
-                <?php if( !empty($paymentGate->restartUrl) ) echo Html::a(Yii::t('paymentgate_alphabank', 'Restart payment'), $paymentGate->restartUrl, ['class' => 'btn btn-warning']); ?>
+                <?php if( !empty($paymentGate->restartUrl) ) echo Html::a(Yii::t('paymentgate_alphabank', 'Restart payment'), [ $paymentGate->restartUrl ], ['class' => 'btn btn-warning']); ?>
             </div>
         
         <?php elseif( $payment->isProcess ): ?>

@@ -19,4 +19,6 @@ return [
     'Restart payment' => 'Новый платёж',
     'Refresh payment' => 'Обновить статус платежа',
     'Reenter payment' => 'Повторить ввод реквизитов',
+    
+    'Payment details' => 'Посмотреть информацию о платеже',
 ];
