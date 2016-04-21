@@ -46,7 +46,6 @@ class PaymentController extends Controller
     /**
      * @inheritdoc
      */
-    /*
     public function beforeAction($action) {
         
         Yii::$app->getModule('wallets');
@@ -55,7 +54,6 @@ class PaymentController extends Controller
         return parent::beforeAction($action);
         
     }
-    */
     
     /**
      * @return mixed

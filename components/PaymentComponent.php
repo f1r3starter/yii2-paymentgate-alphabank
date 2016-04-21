@@ -5,6 +5,8 @@ use Yii;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 
+use yii\helpers\Url;
+
 class PaymentComponent extends Component
 {
     public $userName;
@@ -63,7 +65,7 @@ class PaymentComponent extends Component
             'password' => $this->password,
             'orderNumber' => urlencode($systemOrderId),
             'amount' => urlencode($amount),
-            'returnUrl' => $this->returnUrl,
+            'returnUrl' => Url::home(true).$this->returnUrl,
         ];
         if( !is_null( $this->failUrl ) ) $data['failUrl'] = $this->failUrl;
         

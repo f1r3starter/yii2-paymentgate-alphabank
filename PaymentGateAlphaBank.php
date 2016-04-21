@@ -36,7 +36,6 @@ class PaymentGateAlphaBank extends \yii\base\Module
         parent::init();
         
         $this->registerTranslations();
-        $this->initComponent();
         
         /*
         if (Yii::$app instanceof \yii\console\Application) {
@@ -63,19 +62,4 @@ class PaymentGateAlphaBank extends \yii\base\Module
         ];
     }
     
-    /**
-     * @inheritdoc
-     */
-    public function initComponent()
-    {
-        $components = Yii::$app->components;
-        if( is_null( $this->componentName ) && isset( $components[$this->componentName] ) ) {
-            
-            $componentName = $this->componentName;
-            if( Yii::$app->$componentName instanceof \paymentgate_alphabank\components\PaymentComponent ) {
-                Yii::$app->$componentName->returnUrl = Url::toRoute();
-            }
-            
-        }
-    }
 }
