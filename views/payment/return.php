@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php if( !empty($paymentGate->restartUrl) ) echo Html::a(Yii::t('paymentgate_alphabank', 'Refresh payment'), Url::current(), ['class' => 'btn btn-warning']); ?>
             </div>
         
-        <?php elseif( !$payment->isAccept ): ?>
+        <?php elseif( $payment->isAccept ): ?>
         
             <div class="col-xs-6 text-right">
                 <?php if( !empty($paymentGate->restartUrl) ) echo Html::a(Yii::t('paymentgate_alphabank', 'Restart payment'), $paymentGate->restartUrl, ['class' => 'btn btn-warning']); ?>

@@ -177,6 +177,14 @@ class PaymentComponent extends Component
     }
     
     /**
+     * сформировать адрес страницы для просмотра статуса платежа
+     */
+    public function formStatusUrl( $orderId )
+    {
+        return Url::home(true) . Url::to([ $this->returnUrl, 'orderId' => $orderId ]);
+    }
+    
+    /**
      * отправка запроса на платёжный шлюз через Curl (метод POST)
      */
     private function gateway($method, $data)
