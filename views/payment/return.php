@@ -14,6 +14,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     
+    <?php
+        if( isset($orderStatusDescription) && !empty( $orderStatusDescription ) ) {
+            echo Html::tag( 'p', $orderStatusDescription );
+        }
+    ?>
+    
     <?php if( $payment->isProcess ): ?>
     
         <p><?php echo Yii::t('paymentgate_alphabank','Please, wait. Your payment is processing.'); ?></p>
@@ -31,6 +37,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <p><?php echo Yii::t('paymentgate_alphabank','Your payment not processed. Try to re-enter your payment details.'); ?></p>
     
     <?php endif; ?>
+    
+    <?php
+        if( !empty($paymentGate->errors) ) {
+            echo Html::tag('p', implode(' ', $paymentGate->errors) );
+        }
+    ?>
     
     <div class="row">
     

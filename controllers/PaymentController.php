@@ -11,6 +11,8 @@ use yii\web\ForbiddenHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
+use yii\helpers\ArrayHelper;
+
 use paymentgate_alphabank\PaymentGateAlphaBank;
 
 /**
@@ -67,9 +69,17 @@ class PaymentController extends Controller
         $payment = $paymentClass::find()->where([$paymentGate->paymentOrderField => $orderId])->one();
         if( empty($payment) ) throw new NotFoundHttpException( Yii::t('paymentgate_alphabank','The requested page does not exist.') );
         
+        $orderStatus = Yii::$app->paymentgate_alphabank->getStatus( $orderId );
+        $orderList = ArrayHelper::map( Yii::$app->paymentgate_alphabank->getOrderStatuses(), 'id', 'description' );
+        
+        if( !empty($orderStatus) && array_key_exists($orderStatus, $orderList) ) {
+            $orderStatusDescription = $orderList[ $orderStatus ];
+        }
+        
         return $this->render('return', [
             'paymentGate' => $paymentGate,
             'payment' => $payment,
+            'orderStatusDescription' => ( isset($orderStatusDescription) ) ? $orderStatusDescription : null,
         ]);;
     }
     
