@@ -31,13 +31,13 @@ class PaymentComponent extends Component
     public static function getOrderStatuses($status = false)
     {
         $statuses = [
-            0 => 'Заказ зарегистрирован, но не оплачен.',
-            1 => 'Предавторизованная сумма захолдирована (для двухстадийных платежей).',
-            2 => 'Проведена полная авторизация суммы заказа.',
-            3 => 'Авторизация отменена.',
-            4 => 'По транзакции была проведена операция возврата.',
-            5 => 'Инициирована авторизация через ACS банка-эмитента.',
-            6 => 'Авторизация отклонена.'
+            0 => 'Заказ зарегистрирован, но не оплачен',
+            1 => 'Предавторизованная сумма захолдирована (для двухстадийных платежей)',
+            2 => 'Проведена полная авторизация суммы заказа',
+            3 => 'Авторизация отменена',
+            4 => 'По транзакции была проведена операция возврата',
+            5 => 'Инициирована авторизация через ACS банка-эмитента',
+            6 => 'Авторизация отклонена'
 
         ];
         return $status !== false ? ArrayHelper::getValue($statuses, $status) : $statuses;
@@ -77,8 +77,11 @@ class PaymentComponent extends Component
      *      5           Ошибка значения параметра запроса.
      *      7           Системная ошибка.
      */
-    public function initPayment($systemOrderId, $amount, $description)
+    public function initPayment($systemOrderId, $amount, $description, $returnUrl = false)
     {
+        if($returnUrl){
+            $this->returnUrl = $returnUrl;
+        }
         if (is_null($this->returnUrl)) return false;
 
         $data = [
@@ -86,7 +89,7 @@ class PaymentComponent extends Component
             'password' => $this->password,
             'orderNumber' => urlencode($systemOrderId),
             'amount' => urlencode($amount),
-            'returnUrl' => Url::home(true) . $this->returnUrl,
+            'returnUrl' => $this->returnUrl,
         ];
         if (!is_null($this->failUrl)) $data['failUrl'] = $this->failUrl;
 
