@@ -77,7 +77,7 @@ class PaymentComponent extends Component
      *      5           Ошибка значения параметра запроса.
      *      7           Системная ошибка.
      */
-    public function initPayment($systemOrderId, $amount, $description, $returnUrl = false, $json)
+    public function initPayment($systemOrderId, $amount, $description, $returnUrl = false, $json, $clientId = null)
     {
         if($returnUrl){
             $this->returnUrl = $returnUrl;
@@ -91,8 +91,12 @@ class PaymentComponent extends Component
             'amount' => urlencode($amount),
             'returnUrl' => $this->returnUrl,
             'jsonParams' => json_encode($json),
-
         ];
+
+        if ($clientId != null) {
+            $data['clientId'] = $clientId;
+        }
+
         if (!is_null($this->failUrl)) $data['failUrl'] = $this->failUrl;
 
         $response = $this->gateway('register.do', $data);
@@ -237,5 +241,113 @@ class PaymentComponent extends Component
     {
         $this->errors[] = $message;
         return true;
+    }
+
+
+    public function initPreAuthPayment($systemOrderId, $amount, $description, $returnUrl = false, $json, $clientId)
+    {
+        if ($returnUrl) {
+            $this->returnUrl = $returnUrl;
+        }
+
+        if (is_null($this->returnUrl)) return false;
+
+        $data = [
+            'userName' => $this->userName,
+            'password' => $this->password,
+            'orderNumber' => urlencode($systemOrderId),
+            'amount' => urlencode($amount),
+            'returnUrl' => $this->returnUrl,
+            'jsonParams' => json_encode($json),
+            'clientId' => $clientId,
+        ];
+
+        if (!is_null($this->failUrl)) $data['failUrl'] = $this->failUrl;
+
+        $response = $this->gateway('registerPreAuth.do', $data);
+
+        if (isset($response['errorCode']) && ($response['errorCode'] > 0)) {
+            $this->addError('Error #' . $response['errorCode'] . ': ' . (isset($response['errorMessage'])) ? $response['errorMessage'] : '');
+        } else {
+            if (!isset($response['orderId']) || !isset($response['formUrl'])) return false;
+
+            $this->_bankOrderId = $response['orderId'];
+            $this->_bankFormUrl = $response['formUrl'];
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function getOrderStatusExtended($orderId)
+    {
+        $data = [
+            'userName' => $this->userName,
+            'password' => $this->password,
+            'orderId' => $orderId,
+        ];
+
+        $response = $this->gateway('getOrderStatusExtended.do', $data);
+
+        if (isset($response['errorCode']) && ($response['errorCode'] > 0)) {
+            $this->addError('Error #' . $response['errorCode'] . ': ' . (isset($response['errorMessage'])) ? $response['errorMessage'] : '');
+        } else {
+            return $response;
+        }
+
+        return false;
+    }
+
+    public function getBindingInfo($orderId)
+    {
+        $orderStatus = $this->getOrderStatusExtended($orderId);
+
+        if (isset($orderStatus['bindingInfo'])) {
+            return $orderStatus['bindingInfo'];
+        }
+
+        return false;
+    }
+
+    /** отмена заказа **/
+    public function cancelOrder($orderId)
+    {
+        $data = [
+            'userName' => $this->userName,
+            'password' => $this->password,
+            'orderId' => $orderId,
+        ];
+
+        $response = $this->gateway('reverse.do', $data);
+
+        if (isset($response['errorCode']) && ($response['errorCode'] > 0)) {
+            $this->addError('Error #' . $response['errorCode'] . ': ' . (isset($response['errorMessage'])) ? $response['errorMessage'] : '');
+        } else {
+            return true;
+        }
+
+        return false;
+    }
+
+    /** оплата захолдированных платежей **/
+    public function payOrderBinding($mdOrder, $bindingId)
+    {
+        $data = [
+            'userName' => $this->userName,
+            'password' => $this->password,
+            'mdOrder' => $mdOrder,
+            'bindingId' => $bindingId,
+        ];
+
+        $response = $this->gateway('paymentOrderBinding.do', $data);
+
+        if (isset($response['errorCode']) && ($response['errorCode'] > 0)) {
+            $this->addError('Error #' . $response['errorCode'] . ': ' . (isset($response['errorMessage'])) ? $response['errorMessage'] : '');
+        } else {
+            return true;
+        }
+
+        return false;
     }
 }
