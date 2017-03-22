@@ -77,7 +77,7 @@ class PaymentComponent extends Component
      *      5           Ошибка значения параметра запроса.
      *      7           Системная ошибка.
      */
-    public function initPayment($systemOrderId, $amount, $description, $returnUrl = false, $json, $clientId = null)
+    public function initPayment($systemOrderId, $amount, $description, $returnUrl = false, $json, $clientId = null, $autopayment = false)
     {
         if($returnUrl){
             $this->returnUrl = $returnUrl;
@@ -95,6 +95,10 @@ class PaymentComponent extends Component
 
         if ($clientId != null) {
             $data['clientId'] = $clientId;
+        }
+
+        if ($autopayment) {
+            $data['features'] = 'AUTO_PAYMENT';
         }
 
         if (!is_null($this->failUrl)) $data['failUrl'] = $this->failUrl;
