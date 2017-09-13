@@ -1,5 +1,5 @@
 {
-    "name": "VEKsoftware/yii2-paymentgate-alphabank",
+    "name": "f1r3starter/yii2-paymentgate-alphabank",
     "description": "Extension for payment through the payment gateway of the Alfabank",
     "type": "yii2-extension",
     "keywords": ["yii2","extension","payment"],
